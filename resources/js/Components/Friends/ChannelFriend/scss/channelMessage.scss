@@ -1,0 +1,83 @@
+.channel-message {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+    margin-right: 4px;
+    background-color: transparent;
+    margin-top: 13px;
+    height: auto;
+    box-sizing: border-box;
+
+    &:hover {
+        background-color: var(--quaternary);
+        cursor: pointer;
+    }
+
+    &.has-mention {
+        background-color: var(--mention-message);
+        border-left: 2px solid var(--mention-detail);
+    }
+
+    .message {
+        margin-left: 17px;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .user {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            strong {
+                color: var(--white);
+                font-size: 16px;
+            }
+
+            .data {
+                margin-left: 6px;
+                color: var(--grey);
+                font-size: 16px;
+            }
+
+            .bot {
+                margin-left: 9px;
+                background-color: var(--discord);
+                color: var(--white);
+                padding: 4px 5px;
+                border-radius: 4px;
+                text-transform: uppercase;
+                font-size: 11px;
+                font-weight: bolder;
+
+            }
+
+            .avatar {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: var(--secondary);
+                flex-shrink: 0;
+                margin: 5px;
+                margin-top: 20px;
+
+                &.bot-avatar {
+                    background-color: var(--mention-detail);
+                }
+            }
+
+        }
+
+
+        .body {
+            color: var(--white);
+            font-size: 16px;
+            margin-left: 50px;
+
+            p {
+                text-align: justify;
+            }
+        }
+    }
+}

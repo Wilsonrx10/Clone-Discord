@@ -1,0 +1,95 @@
+.adicionar-friend {
+    
+    @include modalservidor;
+
+    .content {
+        width: 600px !important;
+        height: 350px !important;
+        background-color: var(--secondary);
+
+        .principal {
+            height: 100% !important;
+
+            .pesquisa {
+                height: 20%;
+                margin-bottom: 8px;
+
+                input {
+                    width: 100%;
+                    padding: 15px;
+                    border-radius: 6px;
+                    border: 1px solid var(--tertiary);
+                    background-color: var(--tertiary);
+                    color: #ddd;
+                }
+            }
+
+            .resultado {
+                width: 100%;
+                height: 60%;
+                max-height: 60%;
+                overflow-y: auto;
+                @include scroll;
+
+                .amigos {
+                    display: flex;
+                    flex-direction: column;
+
+                    div {
+                        display: flex;
+                        flex-direction: row;
+                        width: 100%;
+                        margin-bottom: 6px;
+                        padding: 6px;
+                        padding-left: 10px;
+                        color: white;
+
+                        img {
+                            width: 20px;
+                            height: 20px;
+                            border-radius: 50%;
+                        }
+
+                        span {
+                            margin-left: 5px;
+                        }
+
+                        &.active {
+                            background-color: var(--grey);
+                            border-radius: 4px;
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                .search-not-found {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+
+            .cancelar {
+                height: 20%;
+                display: flex;
+                align-items: center;
+                border-top: 1px solid rgb(149, 149, 149);
+
+                div {
+                    display: flex;
+                }
+
+                strong {
+                    font-size: 12px;
+                    font-weight: 600;
+                    color: rgb(9, 174, 9);
+                }
+
+                p {
+                    font-size: 13px;
+                    color: rgb(117, 117, 117);
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+}

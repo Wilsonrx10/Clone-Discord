@@ -1,0 +1,48 @@
+.container {
+    grid-area: FI;
+    background-color: var(--primary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 17px;
+    z-index: 2;
+    border-bottom: 3px solid var(--discord);
+
+    .list {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        .opcao {
+            margin: 5px;
+            background-color: #8a8c9048;
+            color: var(--grey);
+            padding: 3px;
+            border-radius: 2px;
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
+        .adicionar {
+           @include button_normal;
+        }
+
+    }
+
+    .usernameMessage {
+        display:flex;
+        align-items: center;
+        div  {
+          display:flex;
+          .icone {
+           color: var(--white);
+          }
+          .nome {
+            margin-left: 4px;
+            color:var(--grey);
+            font-weight: bold;
+          }
+        }
+    }
+}
