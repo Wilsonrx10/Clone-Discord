@@ -10,5 +10,6 @@ class DatabaseSeeder extends Seeder
     {
         (new \Database\Seeders\UserSeeder())->run();
         (new \Database\Seeders\user_profileSeeder())->run();
+        (new \Database\Seeders\ServerTypeSeeder())->run();
     }
 }

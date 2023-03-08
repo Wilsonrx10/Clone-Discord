@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('servers', function (Blueprint $table) {
+        Schema::create('server_types', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('photo')->nullable();
-            $table->string('admin')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('servers');
+        Schema::dropIfExists('server_types');
     }
 };

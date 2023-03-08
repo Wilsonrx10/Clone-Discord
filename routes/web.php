@@ -62,17 +62,17 @@ Route::controller(UserController::class)->group(function () {
     });
 });
 
-/* Channel */
+
 
 Route::controller(ServidorController::class)->group(function () {
     Route::middleware('verificarlogin')->group(function() {
         Route::post('/CriarServidor','CriarNovoServidor');
-        Route::get('/BuscarListaServidores','BuscarListaServidores');
+        Route::get('/BuscarListaServidores','getServers');
+        Route::get('/BuscarTiposServidor','getTypeServer');
         Route::get('/AbrirServidor','AbrirServidor');
     });
 });
 
-/* Friend */
 
 Route::prefix('channel')->group(function () {
     Route::middleware('verificarlogin')->group(function () {

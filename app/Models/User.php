@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Servers\Server;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\User\skills;
 use App\Models\User\Statu;
@@ -39,5 +40,10 @@ class User extends Authenticatable
     public function status()
     {
         return $this->hasOne(Statu::class);
+    }
+
+    public function server()
+    {
+        return $this->hasMany(Server::class);
     }
 }

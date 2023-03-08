@@ -19,8 +19,9 @@ return new class extends Migration
             $table->foreign('server_id')->references('id')->on('servers')->onDelete('CASCADE');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
-            $table->boolean('boot')->nullable()->default(false);
-            $table->boolean('is_admin')->nullable()->default(false);
+            $table->boolean('is_admin')->default(false);
+            $table->boolean('is_boot')->default(false);
+            $table->timestamps();
         });
     }
 
