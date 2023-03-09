@@ -22,29 +22,29 @@
     <hr />
 
     <div class="data_inscricao">
-      <h5>Temporary SMS Membro desde</h5>
-      <p>{{ dados_usuario.created_at }}</p>
+      <h5>Usuario desde</h5>
+      <p>{{ formatDate(dados_usuario.created_at) }}</p>
     </div>
 
     <hr />
 
-    <div class="status">
+    <div class="status" v-if="dados_usuario.status">
       <disponivel
-        v-if="dados_usuario.status == 'disponivel'"
+        v-if="dados_usuario.status.status == 'disponivel'"
         :size="18"
         style="color: green"
       />
       <ausente
-        v-if="dados_usuario.status == 'Ausente'"
+        v-if="dados_usuario.status.status == 'Ausente'"
         :size="18"
         style="color: yellow"
       />
       <pertubar
-        v-if="dados_usuario.status == 'Não pertubar'"
+        v-if="dados_usuario.status.status == 'Não pertubar'"
         :size="18"
         style="color: rgb(250, 92, 92)"
       />
-      <pertubar v-if="dados_usuario.status == 'Invisivel'" :size="18" />
+      <pertubar v-if="dados_usuario.status.status  == 'Invisivel'" :size="18" />
       <a @mouseover="DefinirStatus" mouseout="DefinirStatus" href="#">
         Definir status personalizado</a
       >
@@ -111,7 +111,7 @@ const DefinirStatus = () => {
 const mudarStatus = (event) => {
   let status = event;
   axios
-    .post("/atualizarStatus", { status: status })
+    .post("/atualizarStatus", { status })
     .then((response) => {
       props.dados_usuario.status = response.data;
     })

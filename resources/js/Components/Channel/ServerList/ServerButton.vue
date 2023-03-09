@@ -1,13 +1,13 @@
 <template>
   <div>
     <div
-      @click="AbrirServidor(servers.id)"
-      v-for="servers in servers"
-      :key="servers.id"
+      v-for="item in servers"
+      :key="item.id"
+      @click="AbrirServidor(item.id)"
       class="serverButton"
       :class="{ 'serverButton-hasNotification': hasNotification }"
     >
-      <img :src="'/image/servidores/' + servers.foto_servidor" />
+      <img :src="'/image/servidores/' + item.photo" />
       <div class="mentions" v-if="mentions">{{ mentions }}</div>
     </div>
   </div>
@@ -25,7 +25,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    const servers = ref([]);
+    const servers = ref();
     onMounted(() => {
         getServers()
     });
@@ -55,7 +55,7 @@ export default {
         });
     };
 
-    return { getServers, AbrirServidor };
+    return { getServers, AbrirServidor,servers };
   },
 };
 </script>

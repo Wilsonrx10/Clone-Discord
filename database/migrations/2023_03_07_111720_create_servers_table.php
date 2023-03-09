@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->string('name')->nullable();
             $table->string('photo')->nullable();
-            $table->string('admin')->nullable();
             $table->timestamps();
         });
     }

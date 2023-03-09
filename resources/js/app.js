@@ -7,6 +7,7 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ZiggyVue } from "../../vendor/tightenco/ziggy/dist/vue.m";
 import useEventsBus from "../js/eventBus";
 import store from "./store";
+import general from "./mixins/general.js";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -22,8 +23,7 @@ import "primeicons/primeicons.css";
 import ToastService from "primevue/toastservice";
 import ConfirmationService from "primevue/confirmationservice";
 
-const appName =
-    window.document.getElementsByTagName("title")[0]?.innerText || "Temporary";
+const appName = window.document.getElementsByTagName("title")[0]?.innerText || "Clone Discord";
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -35,6 +35,7 @@ createInertiaApp({
     setup({ el, app, props, plugin }) {
         return createApp({ render: () => h(app, props) })
             .use(plugin)
+            .mixin(general)
             .use(store)
             .use(PrimeVue)
             .use(ToastService)
