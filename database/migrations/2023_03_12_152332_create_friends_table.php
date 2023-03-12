@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('friends', function (Blueprint $table) {
             $table->id();
-            $table->string('id_usuario')->index();
-            $table->string('id_amigo')->index();
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
+            $table->unsignedBigInteger('friend_id');
+            $table->foreign('friend_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->string('status');
             $table->timestamps();
         });

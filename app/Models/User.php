@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Friends\Friend;
 use App\Models\Servers\Server;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\User\skills;
@@ -45,5 +46,9 @@ class User extends Authenticatable
     public function server()
     {
         return $this->hasMany(Server::class);
+    }
+    public function friends()
+    {
+        return $this->hasMany(Friend::class);
     }
 }

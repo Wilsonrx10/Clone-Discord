@@ -14,8 +14,9 @@
 </template>
 
 <script>
+import useEventsBus from "@/eventBus";
 import axios from "axios";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 export default {
   props: {
@@ -24,22 +25,28 @@ export default {
     mentions: Number,
   },
   setup() {
+    const {bus,emit} = useEventsBus();
     const store = useStore();
     const servers = ref();
+
+    watch(() => bus.value.get("updateServers"),(payload) => {
+      getServers();
+    });
+
     onMounted(() => {
-        getServers()
+      getServers();
     });
 
     const getServers = () => {
-        axios
+      axios
         .get("/BuscarListaServidores")
         .then((response) => {
-            servers.value = response.data;
+          servers.value = response.data;
         })
         .catch((erro) => {
           console.log(erro);
         });
-    }
+    };
 
     const AbrirServidor = (id) => {
       axios
@@ -55,7 +62,7 @@ export default {
         });
     };
 
-    return { getServers, AbrirServidor,servers };
+    return { getServers, AbrirServidor, servers };
   },
 };
 </script>

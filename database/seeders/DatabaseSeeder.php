@@ -9,7 +9,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         (new \Database\Seeders\UserSeeder())->run();
-        (new \Database\Seeders\user_profileSeeder())->run();
+        (new \Database\Seeders\UserProfileSeeder())->run();
         (new \Database\Seeders\ServerTypeSeeder())->run();
     }
 }

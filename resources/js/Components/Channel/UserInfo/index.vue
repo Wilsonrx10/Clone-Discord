@@ -2,12 +2,12 @@
   <div class="container">
     <div @click="userinfor" class="profile">
       <img
-        :src="'/image/usuarios/' + dados_usuario.profile?.profile_photo"
+        :src="'/image/usuarios/' + user.profile?.profile_photo"
         class="avatar"
         alt=""
       />
       <div class="userdata">
-        <strong>{{ dados_usuario.name }}</strong>
+        <strong>{{ user.name }}</strong>
         <span>#1010</span>
       </div>
     </div>
@@ -18,13 +18,13 @@
       <definicoes @click="configuracoes" :size="20" />
     </div>
 
-    <div class="user" v-show="user_info">
-      <UserInfo :dados_usuario="dados_usuario" />
+    <div class="user" v-show="info">
+      <UserInfo :dados_usuario="user" />
     </div>
 
-    <div class="settings" v-show="user_setting">
+    <div class="settings" v-show="setting">
       <Settings
-        :dados_usuario="dados_usuario"
+        :dados_usuario="user"
         @FecharConfiguracoes="FecharConfiguracoes"
       />
     </div>
@@ -35,39 +35,41 @@
 import Mic from "vue-material-design-icons/Microphone.vue";
 import Headphone from "vue-material-design-icons/Headphones.vue";
 import definicoes from "vue-material-design-icons/CogOutline.vue";
-import { ref, reactive, toRefs } from "vue";
+import { ref, reactive, toRefs, computed } from "vue";
 import { useStore } from "vuex";
 import UserInfo from "./UserInfo.vue";
 import Settings from "./Settings.vue";
 export default {
-  props: ["dados_usuario"],
   setup() {
+    const store = useStore();
+    const user = computed(()=> store.getters.user);
+
     const element = reactive({
-      user_info: false,
-      user_setting: false,
+      info: false,
+      setting: false,
     });
 
-    const store = useStore();
 
     const configuracoes = () => {
-      element.user_setting = true;
+      element.setting = true;
     };
 
     const FecharConfiguracoes = () => {
-      element.user_setting = false;
+      element.setting = false;
     };
 
     const userinfor = () => {
-      if (element.user_info == true) {
-        element.user_info = false;
+      if (element.info == true) {
+        element.info = false;
       } else {
-        element.user_info = true;
+        element.info = true;
       }
     };
 
     return {
       configuracoes,
       userinfor,
+      user,
       ...toRefs(element),
       FecharConfiguracoes,
     };

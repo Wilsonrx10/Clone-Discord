@@ -2,19 +2,27 @@ import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
 export default createStore({
     state: {
-    dadosUsuario: [],
-    // Variaveis do Channel 
+    user: [],
+    // Channel 
     DadosServidor:[],
-    // Variaveis do Friend 
+    Estado: false,
+    // Friend 
     estadoFriend:true,
+    friends: [],
     DadosMensagemUsuario:[],
-    ListaAmigos:null
     },
     getters: {
+      user(state) {
+        return state.user;
+      }
     },
     mutations: {
       GUARDAR_DADOS_USUARIO(state,payload) {
-        state.dadosUsuario = payload
+        state.user = payload
+      },
+
+      GUARDAR_LISTA_AMIGOS(state,payload) {
+        state.friends = payload
       },
       MUDAR_ESTADO_SERVIDOR(state) {
         if (state.Estado == true) {

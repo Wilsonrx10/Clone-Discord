@@ -14,6 +14,5 @@ class LogoutController extends Controller
         if (Auth::logout()) {
            return Redirect::route("login");
         }
-        
     }
 }

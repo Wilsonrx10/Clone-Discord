@@ -17,8 +17,8 @@ class UserSeeder extends Seeder
                 'name' => 'Wilson Manuel',
                 'email' => 'teste@gmail.com',
                 'password' => Hash::make(123456),
-                'ativo_account' => 0,
-                'cad_concluir' => 0,
+                'ativo_account' => 1,
+                'cad_concluir' => 1,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

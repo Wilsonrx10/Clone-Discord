@@ -1,10 +1,10 @@
 <template>
   <div id="discord">
     <div id="grid">
-      <ServerList :dados_usuario="dados_usuario" />
-      <ServerName :dados_usuario="dados_usuario" />
+      <ServerList/>
+      <ServerName/>
       <ChannelList />
-      <UserInfo :dados_usuario="dados_usuario" />
+      <UserInfo/>
       <ChannelInfo />
       <ChannelData />
       <UserList />
@@ -30,14 +30,12 @@ export default {
   },
   setup(props) {
     const store = useStore();
-    const dados_usuario = ref([]);
 
     onMounted(() => {
-      dados_usuario.value = props.user;
       store.commit("GUARDAR_DADOS_USUARIO", props.user);
     });
 
-    return { dados_usuario };
+    return {};
   },
   components: {
     ServerList,

@@ -29,8 +29,9 @@ class ServidorController extends Controller
 
         if($request->imagem) {
             $img = $imagem->UploadImagem('servidores', $request->imagem);
-        } 
-        $img = 'discord.png';
+        } else {
+            $img = 'discord.png';
+        }
 
         if ($img != false) {
 

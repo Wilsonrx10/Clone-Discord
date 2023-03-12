@@ -100,11 +100,15 @@
 import close from "vue-material-design-icons/Close.vue";
 import ServerButton from "./ServerButton.vue";
 import AddServer from "./AddServer.vue";
-import { reactive, ref, defineProps, onMounted } from "vue";
+import { reactive, ref, onMounted, computed } from "vue";
 import axios from "axios";
 import ServerHome from "./ServerHome.vue";
+import { useStore } from "vuex";
+import useEventsBus from "@/eventBus";
 
-const props = defineProps(["dados_usuario"]);
+const store = useStore();
+const { bus, emit } = useEventsBus();
+const user = computed(()=> store.getters.user);
 
 const element = reactive({
   imagem: "/image/user.jpg",
@@ -212,7 +216,7 @@ const createImg = (file) => {
 
   reader.onload = (e) => {
     element.imagem = e.target.result;
-    DadosFormulario.imagem = element.imagem;
+    form.imagem = element.imagem;
   };
 
   reader.readAsDataURL(file);
@@ -231,6 +235,7 @@ const CriarServidor = (response) => {
       console.log(erro);
     }).finally(()=>{
       modal.estado = false
+      emit('updateServers');
     })
 };
 </script>

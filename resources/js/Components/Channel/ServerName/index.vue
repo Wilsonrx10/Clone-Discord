@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <div class="title">{{ dados_usuario.name }}</div>
+    <div class="title">{{ user.name }}</div>
     <div class="icon">
       <ExpandIcon @click="Session_logout" :size="28" />
     </div>
 
-    <div v-show="estado_session" class="Session_logout">
+    <div v-if="estado_session" class="Session_logout">
       <a @click.prevent.stop="Terminar_sessao" href="#"
         ><Logout :size="20" /> Terminar Sessão</a
       >
@@ -21,18 +21,20 @@
 import Onff from "vue-material-design-icons/AccountTieVoice.vue";
 import Logout from "vue-material-design-icons/Logout.vue";
 import ExpandIcon from "vue-material-design-icons/ChevronDown.vue";
-import { toRefs, reactive } from "vue";
+import { toRefs, reactive, computed } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import ModalLogout from "@/Components/Modals/Logout.vue";
+import { useStore } from 'vuex';
 export default {
-  props: ["dados_usuario"],
   setup() {
+    const store = useStore();
+    const user = computed(()=> store.getters.user);
     const variables = reactive({
       estado_session: false,
       modal: false,
     });
     const Session_logout = () => {
-      if (variables.estado_session == false) {
+      if (!variables.estado_session) {
         variables.estado_session = true;
       } else {
         variables.estado_session = false;
@@ -40,14 +42,14 @@ export default {
     };
 
     const Terminar_sessao = () => {
-      if (variables.modal == false) {
+      if (!variables.modal) {
         variables.modal = true;
       } else {
         variables.modal = false;
       }
     };
 
-    return { Session_logout, ...toRefs(variables), Terminar_sessao };
+    return { Session_logout, ...toRefs(variables), Terminar_sessao,user };
   },
   components: { ExpandIcon, Onff, Logout, ModalLogout },
 };

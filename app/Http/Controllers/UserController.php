@@ -11,13 +11,9 @@ class UserController extends Controller
 
     public function Channel(Request $request)
     {
-        $user = $request->user();
-
         return Inertia::render('Channel', [
-            'user' => $user,
+            'user' => $request->user(),
         ]);
-
-        return $this->DadosdoUsuario($request);
     }
 
     public function atualizarStatus(Request $request)
