@@ -13,8 +13,12 @@
           <h2>Crie um Servidor</h2>
           <p>Seu servidor é onde você e seus amigos se reunem</p>
           <div class="content-buttons">
-            <div v-for="item in server_type" :key="item.id" @click="PersonalizarServidor(item.id)">
-              <span>{{item.name}}</span>
+            <div
+              v-for="item in server_type"
+              :key="item.id"
+              @click="PersonalizarServidor(item.id)"
+            >
+              <span>{{ item.name }}</span>
             </div>
           </div>
         </div>
@@ -49,21 +53,14 @@
 
             <div class="form">
               <label for="nome">Nome do Servidor</label>
-              <input
-                v-model="form.nome"
-                type="text"
-                placeholder=""
-              />
+              <input v-model="form.nome" type="text" placeholder="" />
             </div>
           </div>
         </div>
 
         <div class="voltar-formulario">
           <span @click="VoltarCriarServidor('personalizar')">Voltar</span>
-          <button
-            v-if="modal.estado == false"
-            @click="CriarServidor"
-          >
+          <button v-if="modal.estado == false" @click="CriarServidor">
             Criar Servidor
           </button>
           <button v-else>Aguarde...</button>
@@ -108,7 +105,7 @@ import useEventsBus from "@/eventBus";
 
 const store = useStore();
 const { bus, emit } = useEventsBus();
-const user = computed(()=> store.getters.user);
+const user = computed(() => store.getters.user);
 
 const element = reactive({
   imagem: "/image/user.jpg",
@@ -117,7 +114,7 @@ const element = reactive({
 const form = reactive({
   imagem: null,
   nome: null,
-  type_server:null
+  type_server: null,
 });
 
 const server_type = ref([]);
@@ -129,22 +126,26 @@ const modal = reactive({
   estado: false,
 });
 
-onMounted(()=>{
+onMounted(() => {
   BuscarTiposServidores();
 });
 
 const BuscarTiposServidores = () => {
-  axios.get('BuscarTiposServidor').then((response)=>{
-    server_type.value = response.data
-  }).catch((err)=>{
-    console.log(err)
-  }).finally(()=>{})
-}
+  axios
+    .get("BuscarTiposServidor")
+    .then((response) => {
+      server_type.value = response.data;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {});
+};
 
 const PersonalizarServidor = (event) => {
   modal.Personalizar = true;
   modal.CriarServidor = false;
-  form.type_server = event
+  form.type_server = event;
 };
 const VoltarCriarServidor = (event) => {
   if (event == "personalizar") {
@@ -233,10 +234,11 @@ const CriarServidor = (response) => {
     })
     .catch((erro) => {
       console.log(erro);
-    }).finally(()=>{
-      modal.estado = false
-      emit('updateServers');
     })
+    .finally(() => {
+      modal.estado = false;
+      emit("updateServers");
+    });
 };
 </script>
 

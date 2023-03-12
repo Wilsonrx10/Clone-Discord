@@ -25,13 +25,16 @@ export default {
     mentions: Number,
   },
   setup() {
-    const {bus,emit} = useEventsBus();
+    const { bus, emit } = useEventsBus();
     const store = useStore();
     const servers = ref();
 
-    watch(() => bus.value.get("updateServers"),(payload) => {
-      getServers();
-    });
+    watch(
+      () => bus.value.get("updateServers"),
+      (payload) => {
+        getServers();
+      }
+    );
 
     onMounted(() => {
       getServers();

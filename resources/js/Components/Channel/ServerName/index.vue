@@ -13,7 +13,6 @@
     </div>
 
     <ModalLogout v-if="modal" />
-    
   </div>
 </template>
 
@@ -24,11 +23,11 @@ import ExpandIcon from "vue-material-design-icons/ChevronDown.vue";
 import { toRefs, reactive, computed } from "vue";
 import { Inertia } from "@inertiajs/inertia";
 import ModalLogout from "@/Components/Modals/Logout.vue";
-import { useStore } from 'vuex';
+import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
-    const user = computed(()=> store.getters.user);
+    const user = computed(() => store.getters.user);
     const variables = reactive({
       estado_session: false,
       modal: false,
@@ -49,7 +48,7 @@ export default {
       }
     };
 
-    return { Session_logout, ...toRefs(variables), Terminar_sessao,user };
+    return { Session_logout, ...toRefs(variables), Terminar_sessao, user };
   },
   components: { ExpandIcon, Onff, Logout, ModalLogout },
 };
