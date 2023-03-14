@@ -28,61 +28,55 @@
 
     <hr />
 
-    <div class="status" v-if="dados_usuario.status">
+    <div class="status" v-if="dados_usuario.status.status_type">
       <disponivel
-        v-if="dados_usuario.status.status == 'disponivel'"
+        v-if="dados_usuario.status.status_type.name == 'Disponivel'"
         :size="18"
         style="color: green"
       />
       <ausente
-        v-if="dados_usuario.status.status == 'Ausente'"
+        v-else-if="dados_usuario.status.status_type.name == 'Ausente'"
         :size="18"
         style="color: yellow"
       />
       <pertubar
-        v-if="dados_usuario.status.status == 'Não pertubar'"
-        :size="18"
+        v-else-if="dados_usuario.status.status_type.name == 'Invisivel'"
         style="color: rgb(250, 92, 92)"
+        :size="18"
       />
-      <pertubar v-if="dados_usuario.status.status  == 'Invisivel'" :size="18" />
+      <pertubar v-else :size="18" />
       <a @mouseover="DefinirStatus" mouseout="DefinirStatus" href="#">
         Definir status personalizado</a
       >
     </div>
 
     <div class="definir-status" v-show="status">
-      <div @click="mudarStatus('disponivel')">
+      <div
+        v-for="item in data.tipostatus"
+        :key="item.id"
+        @click="mudarStatus(item.id)"
+      >
         <span>
-          <disponivel style="color: green" :size="15" />
-          Disponivel
+          <disponivel
+            v-if="item.name === 'Disponivel'"
+            style="color: green"
+            :size="15"
+          />
+          <ausente
+            v-else-if="item.name === 'Ausente'"
+            class="ausente"
+            style="color: yellow"
+            :size="15"
+          />
+          <pertubar
+            v-else-if="item.name === 'Invisivel'"
+            style="color: rgb(250, 92, 92)"
+            :size="15"
+          />
+          <pertubar v-else :size="15" />
+          {{ item.name }}
         </span>
-      </div>
-
-      <hr />
-
-      <div @click="mudarStatus('Ausente')">
-        <span>
-          <ausente class="ausente" style="color: yellow" :size="15" />
-          Ausente
-        </span>
-      </div>
-
-      <div @click="mudarStatus('Não pertubar')">
-        <span>
-          <pertubar style="color: rgb(250, 92, 92)" :size="15" />
-          Não pertubar
-        </span>
-        <p>Você não ira mais receber notificações na area de trabalho</p>
-      </div>
-
-      <div @click="mudarStatus('Invisivel')">
-        <span>
-          <pertubar :size="15" />
-          Invisivel
-        </span>
-        <p>
-          Você não vai aparecer como disponivel, mas tera seu perfil disponivel
-        </p>
+        <p>{{ item.body }}</p>
       </div>
     </div>
   </div>
@@ -93,12 +87,31 @@ import disponivel from "vue-material-design-icons/MoonFull.vue";
 import ausente from "vue-material-design-icons/MoonWaningCrescent.vue";
 import pertubar from "vue-material-design-icons/MoonFull.vue";
 import Edit from "vue-material-design-icons/Pencil.vue";
-import { computed, defineProps, ref } from "vue";
+import { computed, defineProps, onMounted, reactive, ref } from "vue";
 import axios from "axios";
 
 const props = defineProps(["dados_usuario"]);
 
 const status = ref(false);
+
+const data = reactive({
+  tipostatus: [],
+});
+
+onMounted(() => {
+  BuscarTiposStatus();
+});
+
+const BuscarTiposStatus = () => {
+  axios
+    .get("BuscarTiposStatus")
+    .then((response) => {
+      data.tipostatus = response.data;
+    })
+    .catch((erro) => {
+      console.log(erro);
+    });
+};
 
 const DefinirStatus = () => {
   if (status.value == true) {
@@ -108,12 +121,11 @@ const DefinirStatus = () => {
   }
 };
 
-const mudarStatus = (event) => {
-  let status = event;
+const mudarStatus = (status_id) => {
   axios
-    .post("/atualizarStatus", { status })
+    .post("/atualizarStatus", { status_id })
     .then((response) => {
-      props.dados_usuario.status = response.data;
+      props.dados_usuario.status = response.data.data;
     })
     .catch((erro) => {
       console.log(erro);
@@ -185,15 +197,18 @@ const mudarStatus = (event) => {
     margin-top: -180px;
     z-index: 999;
     padding: 20px;
+
     > div {
       padding: 4px 5px;
       border-radius: 4px;
       cursor: pointer;
+
       p {
         font-size: 12px;
         margin-left: 18px;
         color: var(--grey);
       }
+
       span {
         font-size: 14px;
       }
@@ -201,12 +216,15 @@ const mudarStatus = (event) => {
       .ausente {
         transform: rotate(45deg);
       }
+
       &:hover {
         background-color: var(--link);
         color: var(--white);
+
         span {
           color: var(--white) !important;
         }
+
         p {
           color: var(--white) !important;
         }

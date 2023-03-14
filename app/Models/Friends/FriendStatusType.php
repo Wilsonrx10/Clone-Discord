@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models\Friends;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Skills extends Model
+class FriendStatusType extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'nome'
-    ];
 }

@@ -33,7 +33,7 @@ class ServidorController extends Controller
             $img = 'discord.png';
         }
 
-        if ($img != false) {
+        if ($img) {
 
             $server = $request->user()->server()->create([
                 'server_type_id' => $request->type_server,

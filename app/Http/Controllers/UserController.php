@@ -15,16 +15,4 @@ class UserController extends Controller
             'user' => $request->user(),
         ]);
     }
-
-    public function atualizarStatus(Request $request)
-    {
-        $request->user()->status()->updateOrCreate([
-            'status' => $request->status
-        ]);
-
-        return response()->json([
-            'message' => 'estado atualizado',
-            'type' => 200
-        ]);
-    }
 }

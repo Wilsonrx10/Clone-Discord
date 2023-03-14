@@ -10,6 +10,8 @@ class DatabaseSeeder extends Seeder
     {
         (new \Database\Seeders\UserSeeder())->run();
         (new \Database\Seeders\UserProfileSeeder())->run();
+        (new \Database\Seeders\UserStatusTypeSeeder())->run();
         (new \Database\Seeders\ServerTypeSeeder())->run();
+        (new \Database\Seeders\FriendStatusTypeSeeder())->run();
     }
 }

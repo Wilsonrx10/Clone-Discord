@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Models\Friends\Friend;
+use App\Models\Messages\ChatMessage;
 use App\Models\Servers\Server;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Models\User\skills;
-use App\Models\User\Statu;
-use App\Models\User\user_profiles;
+use App\Models\User\UserProfiles;
+use App\Models\User\UserStatu;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -36,11 +37,11 @@ class User extends Authenticatable
 
     public function profile()
     {
-        return $this->hasOne(user_profiles::class);
+        return $this->hasOne(UserProfiles::class);
     }
     public function status()
     {
-        return $this->hasOne(Statu::class);
+        return $this->hasOne(UserStatu::class);
     }
 
     public function server()
@@ -50,5 +51,9 @@ class User extends Authenticatable
     public function friends()
     {
         return $this->hasMany(Friend::class);
+    }
+    public function messages()
+    {
+        return $this->hasMany(ChatMessage::class);
     }
 }

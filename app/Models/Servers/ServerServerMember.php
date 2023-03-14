@@ -1,15 +1,11 @@
 <?php
 
-namespace App\Models\User;
+namespace App\Models\Servers;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Statu extends Model
+class ServerServerMember extends Model
 {
     use HasFactory;
-
-    protected $fillable = [
-        'status'
-    ];
 }
