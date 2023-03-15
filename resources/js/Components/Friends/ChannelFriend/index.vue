@@ -27,7 +27,7 @@
         <input
           @keypress.enter="EnviarMensagem"
           type="text"
-          v-model="mensagem"
+          v-model="form.message"
           placeholder="Conversar"
         />
         <div class="icon">
@@ -51,7 +51,12 @@ import useEventsBus from "@/eventBus";
 const { bus, emit } = useEventsBus();
 const data = ref([]);
 const store = useStore();
-const mensagem = ref();
+
+const form = reactive({
+  message:null,
+  receiver: store.state.DadosMensagemUsuario
+});
+
 const wampus = ref(true);
 const NewFriend = reactive({
   estado: false,
@@ -81,19 +86,17 @@ watch(
 );
 
 const EnviarMensagem = () => {
-  emit("RefreshMessage", mensagem.value);
+  emit("RefreshMessage", form.message);
   axios
-    .post("/channel/EnviarMensagem", {
-      mensagem: mensagem.value,
-      id: dadosMensagem.value.id,
-    })
+    .post("/channel/EnviarMensagem", { ...form })
     .then((response) => {
       console.log(response.data);
+    }).finally(() => {
+      form.message = "";
     })
     .catch((erro) => {
       console.log(erro);
     });
-  mensagem.value = "";
 };
 </script>
 

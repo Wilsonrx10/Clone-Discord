@@ -10,15 +10,21 @@ class Friend extends Model
 {
     use HasFactory;
 
-    protected $with = ['status'];
+    protected $with = ['user','status'];
 
-    public function friend()
+    protected $fillable = [
+        'user_id',
+        'friend_id',
+        'request_id'
+    ];
+
+    public function user()
     {
         return $this->belongsTo(User::class, 'friend_id');
     }
 
     public function status()
     {
-        return $this->hasOne(FriendStatu::class);
+        return $this->belongsTo(FriendStatu::class,'friend_id');
     }
 }

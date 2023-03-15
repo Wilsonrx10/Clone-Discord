@@ -83,7 +83,7 @@ Route::middleware('auth')->group(function () {
         });
 
         Route::controller(MessageController::class)->group(function () {
-            Route::get('/BuscarMessages', 'BuscarMessages');
+            Route::get('/BuscarMessages/{user}', 'BuscarMessages');
             Route::post('/EnviarMensagem', 'EnviarMensagem');
         });
     });

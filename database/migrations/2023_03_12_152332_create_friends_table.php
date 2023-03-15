@@ -19,7 +19,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->unsignedBigInteger('friend_id');
             $table->foreign('friend_id')->references('id')->on('users')->onDelete('CASCADE');
-            $table->string('status');
+            $table->unsignedBigInteger('request_id');
+            $table->foreign('request_id')->references('id')->on('users')->onDelete('CASCADE');
             $table->timestamps();
         });
     }

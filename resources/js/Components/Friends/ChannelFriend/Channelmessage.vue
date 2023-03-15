@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="message">
     <div
-      v-for="listaMessages in listaMessages"
-      :key="listaMessages.id"
+      v-for="item in messages"
+      :key="item.id"
       class="channel-message"
       :class="{ 'has-mention': hasmention }"
     >
@@ -10,14 +10,14 @@
         <div class="user">
           <img
             class="avatar"
-            :src="'/image/usuarios/' + listaMessages.foto_perfil"
+            :src="'/image/usuarios/' + item.user.profile.profile_photo"
           />
-          <strong>{{ listaMessages.nome_usuario }}</strong>
+          <strong>{{ item.user.name }}</strong>
           <span class="bot" v-if="isBot">Bot</span>
-          <span class="data">10/10/2022</span>
+          <span class="data">{{formatDate(item.created_at)}}</span>
         </div>
         <div class="body">
-          <p>{{ listaMessages.mensagem }}</p>
+          <p>{{ item.message }}</p>
         </div>
       </div>
     </div>
@@ -38,29 +38,32 @@ export default {
   },
   setup(props) {
     const { bus } = useEventsBus();
-    const listaMessages = ref([]);
+    const messages = ref([]);
     const store = useStore();
 
     onMounted(() => {
-      Echo.private(`user.${store.state.dadosUsuario.id}`).listen(
-        ".SendMessage",
-        (e) => {
-          console.log(e);
-        }
-      );
-
       BuscarMensagem();
     });
 
 
     watch(() => bus.value.get("RefreshMessage"), (payload) => {
-        const novaMessage = {
-          nome_usuario: store.state.dadosUsuario.name,
-          mensagem: payload[0],
-          foto_perfil: store.state.dadosUsuario.foto_perfil,
-        };
 
-        listaMessages.value.push(novaMessage);
+      document.querySelector('.message').scrollTo({
+        top: document.querySelector('.message').scrollHeight,
+        behavior: 'smooth'
+      });
+
+        let newMessage = {
+          message: payload[0],
+          user:{
+            name: store.state.user.name,
+            profile: {
+              profile_photo: store.state.user.profile.profile_photo
+            },
+          }
+        }
+
+        messages.value.push(newMessage);
       }
     );
 
@@ -72,17 +75,17 @@ export default {
     const BuscarMensagem = async () => {
       await axios
         .get(
-          "/channel/BuscarMessages?id=" + store.state.DadosMensagemUsuario.id
+          `/channel/BuscarMessages/${store.state.DadosMensagemUsuario.id}`
         )
         .then((response) => {
-          listaMessages.value = response.data;
+          messages.value = response.data;
         })
         .catch((erro) => {
           console.log(erro);
         });
     };
 
-    return { BuscarMensagem, listaMessages };
+    return { BuscarMensagem, messages };
   },
 };
 </script>

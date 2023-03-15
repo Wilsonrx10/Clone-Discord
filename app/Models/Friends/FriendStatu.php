@@ -13,6 +13,6 @@ class FriendStatu extends Model
 
     public function status_type()
     {
-        return $this->belongsTo(FriendStatusType::class);
+        return $this->belongsTo(FriendStatusType::class,'friend_statu_type_id');
     }
 }

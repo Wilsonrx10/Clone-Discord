@@ -2,14 +2,14 @@
   <div>
     <div
       v-for="item in amigos"
-      :key="item.friend.id"
-      @click="ExibirMessage(item.friend)"
+      :key="item.user.id"
+      @click="ExibirMessage(item.user)"
       class="container"
       :class="{ active: selected }"
     >
       <div class="channel-info">
-        <img :src="'/image/usuarios/' + item.friend.profile.profile_photo" />
-        <div>{{ item.friend.name }}</div>
+        <img :src="'/image/usuarios/' + item.user.profile.profile_photo" />
+        <div>{{ item.user.name }}</div>
       </div>
 
       <div class="channel-actions">
@@ -44,7 +44,7 @@ watch(
 
 const BuscarListaAmigos = async () => {
     await axios.get("channel/BuscarListaAmigos").then((response) => {
-    amigos.value = response.data.friends;
+    amigos.value = response.data;
     listaAmigos.value = response.data;
     store.commit('GUARDAR_LISTA_AMIGOS', response.data.friends);
   });

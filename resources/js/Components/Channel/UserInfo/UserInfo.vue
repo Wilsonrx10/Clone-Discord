@@ -28,7 +28,7 @@
 
     <hr />
 
-    <div class="status" v-if="dados_usuario.status.status_type">
+    <div class="status" v-if="dados_usuario.status">
       <disponivel
         v-if="dados_usuario.status.status_type.name == 'Disponivel'"
         :size="18"

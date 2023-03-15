@@ -10,13 +10,13 @@ class ChatMessage extends Model
 {
     use HasFactory;
 
+    protected $with = ['user'];
+
     protected $fillable = [
-        'id_usuario',
-        'id_anfitriao',
-        'nome_usuario',
-        'foto_perfil',
+        'user_id',
+        'receiver_id',
+        'message',
         'mention',
-        'mensagem'
     ];
 
     public function user()
