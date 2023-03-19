@@ -70,7 +70,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/CriarServidor', 'CriarNovoServidor');
         Route::get('/BuscarListaServidores', 'getServers');
         Route::get('/BuscarTiposServidor', 'getTypeServer');
-        Route::get('/AbrirServidor', 'AbrirServidor');
+        Route::get('/AbrirServidor/{server}', 'OpenServer');
     });
 
 

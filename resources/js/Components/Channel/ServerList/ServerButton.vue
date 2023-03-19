@@ -1,14 +1,21 @@
 <template>
   <div>
     <div
-      v-for="item in servers"
+      v-for="item in data"
       :key="item.id"
       @click="AbrirServidor(item.id)"
       class="serverButton"
       :class="{ 'serverButton-hasNotification': hasNotification }"
     >
-      <img :src="'/image/servidores/' + item.photo" />
-      <div class="mentions" v-if="mentions">{{ mentions }}</div>
+      <img :src="`/image/servidores/${item.photo}`" />
+
+      <div v-if="state && item.id === active" class="loading">
+        <spinner />
+      </div>
+
+      <div v-else class="mentions">
+        {{ mentions }}
+      </div>
     </div>
   </div>
 </template>
@@ -16,9 +23,11 @@
 <script>
 import useEventsBus from "@/eventBus";
 import axios from "axios";
-import { onMounted, ref, watch } from "vue";
+import { onMounted, reactive, ref, toRefs, watch } from "vue";
 import { useStore } from "vuex";
+import spinner from "../../../Layouts/spinner.vue";
 export default {
+  components: { spinner },
   props: {
     selected: Boolean,
     hasNotification: Boolean,
@@ -27,7 +36,14 @@ export default {
   setup() {
     const { bus, emit } = useEventsBus();
     const store = useStore();
-    const servers = ref();
+
+    const servers = reactive({
+      state: false,
+      data: [],
+      active: null,
+    });
+
+    const state = ref(false);
 
     watch(
       () => bus.value.get("updateServers"),
@@ -44,28 +60,30 @@ export default {
       axios
         .get("/BuscarListaServidores")
         .then((response) => {
-          servers.value = response.data;
+          servers.data = response.data;
         })
         .catch((erro) => {
           console.log(erro);
         });
     };
 
-    const AbrirServidor = (id) => {
+    const AbrirServidor = (server) => {
+      servers.active = server;
+      servers.state = true;
       axios
-        .get("/AbrirServidor?id=" + id)
+        .get(`/AbrirServidor/${server}`)
         .then((response) => {
-          if (response.data == false) {
-            store.commit("MUDAR_ESTADO_SERVIDOR");
-          } else {
-          }
+          emit("server", response.data);
+        })
+        .finally(() => {
+          servers.state = false;
         })
         .catch((erro) => {
           console.log(erro);
         });
     };
 
-    return { getServers, AbrirServidor, servers };
+    return { getServers, AbrirServidor, ...toRefs(servers) };
   },
 };
 </script>
@@ -145,5 +163,17 @@ img {
   color: var(--white);
   border-radius: 12px;
   border: 4px solid var(--notification);
+}
+
+.loading {
+  width: auto;
+  height: 24px;
+  padding: 0 4px;
+  position: absolute;
+  bottom: -4px;
+  right: -4px;
+  font-size: 10px;
+  text-align: right;
+  color: var(--white);
 }
 </style>

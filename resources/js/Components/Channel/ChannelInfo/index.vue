@@ -4,7 +4,7 @@
       <div class="icon">
         <HashTag :size="24" />
       </div>
-      <div class="title">Chat do Wilson</div>
+      <div class="title">{{serverName == NULL ? 'Servidor do Wilson' : serverName}}</div>
     </div>
 
     <div class="opcoesTwo">
@@ -14,8 +14,18 @@
 </template>
 
 <script setup>
+import useEventsBus from "@/eventBus";
+import { ref, watch } from "vue";
 import HashTag from "vue-material-design-icons/Pound.vue";
 import Options from "./options.vue";
+
+const {bus,emit} = useEventsBus();
+const serverName = ref();
+
+watch(()=> bus.value.get('server'),(payload) => {
+  serverName.value = payload[0].name
+})
+
 </script>
 
 <style scoped lang="scss">

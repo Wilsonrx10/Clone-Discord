@@ -5,7 +5,6 @@ export default createStore({
     user: [],
     // Channel 
     DadosServidor:[],
-    Estado: false,
     // Friend 
     estadoFriend:true,
     friends: [],
@@ -24,13 +23,6 @@ export default createStore({
       GUARDAR_LISTA_AMIGOS(state,payload) {
         state.friends = payload
       },
-      MUDAR_ESTADO_SERVIDOR(state) {
-        if (state.Estado == true) {
-          state.Estado = false
-        } else {
-          state.Estado = true;
-        }
-      },
       ABRIR_MENSAGEM_USUARIO(state) {
         state.estadoFriend = false
       },
@@ -38,7 +30,6 @@ export default createStore({
       GUARDAR_DADOS_MENSAGEM_USUARIO(state,payload) {
         state.DadosMensagemUsuario = payload
       }
-
     },
     plugins:[
       new VuexPersistence({

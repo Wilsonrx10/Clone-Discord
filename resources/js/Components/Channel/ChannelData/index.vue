@@ -1,62 +1,60 @@
 <template>
   <div class="channel-data">
-    <div v-if="boas_vinda" class="Boas-vinda">
-      <h2>Bem-Vindo(a) a Servidor Wilson Manuel</h2>
-      <p>
-        Aqui vão algumas dicas para ajudar você a começar! Para mais
-        informações, confira nosso guia
-      </p>
+    <div v-if="!state" class="discord">
+      <h1>Clone Discord</h1>
+    </div>
+    <div v-else>
+      <div v-if="data.messages.length > 0" class="message">
 
-      <div class="buttons">
-        <div>
-          <span>Convide seus amigos</span>
-          <Arrow :size="25" />
-        </div>
+        <channelmessage
+          v-for="item in data.messages"
+          :key="item.id"
+          author="Wilson LaraVue"
+          date="10/10/2022"
+          isBot
+          hasmention
+        >
+          {{item.message}}
+        </channelmessage>
 
-        <div>
-          <span>Personalize teu servidor com um icone</span>
-          <Arrow :size="25" />
-        </div>
+        <!-- <channelmessage author="Mamoudou" date="10/10/2022" hasmention>
+          <Channelmention>Wilson CEO </Channelmention> Você é foda mano !
+        </channelmessage> -->
+      </div>
 
-        <div>
-          <span>Envia sua primeira mensagem</span>
-          <Arrow :size="25" />
+      <div v-else class="Boas-vinda">
+        <h2>Bem-Vindo(a) a Servidor Wilson Manuel</h2>
+        <p>
+          Aqui vão algumas dicas para ajudar você a começar! Para mais
+          informações, confira nosso guia
+        </p>
+
+        <div class="buttons">
+          <div>
+            <span>Convide seus amigos</span>
+            <Arrow :size="25" />
+          </div>
+
+          <div>
+            <span>Personalize teu servidor com um icone</span>
+            <Arrow :size="25" />
+          </div>
+
+          <div>
+            <span>Envia sua primeira mensagem</span>
+            <Arrow :size="25" />
+          </div>
         </div>
       </div>
-    </div>
-
-    <div v-else class="message">
-      <channelmessage
-        author="Wilson LaraVue"
-        date="10/10/2022"
-        isBot
-        hasmention
-      >
-        Olá suas putas
-      </channelmessage>
-
-      <channelmessage
-        v-for="teste in 4"
-        :key="teste.id"
-        author="Wilson LaraVue"
-        date="10/10/2022"
-      >
-        Mundo da programação é maravilhoso
-      </channelmessage>
-
-      <!-- <channelmessage author="Mamoudou" date="10/10/2022" hasmention>
-        
-            <Channelmention>Wilson CEO </Channelmention> Você é foda mano !
-
-            </channelmessage> -->
     </div>
 
     <div class="input-wrapper">
-      <input type="text" name="" id="" placeholder="Conversar" />
+      <input type="text" placeholder="Conversar" />
       <div class="icon">
-        <At :size="24" />
+        <At :size="24"/>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -65,14 +63,25 @@ import Arrow from "vue-material-design-icons/ArrowRight.vue";
 import At from "vue-material-design-icons/At.vue";
 import Channelmessage from "./Channelmessage.vue";
 import Channelmention from "./Channelmention.vue";
-import { computed } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import { useStore } from "vuex";
+import useEventsBus from "@/eventBus";
 
 const store = useStore();
-
-const boas_vinda = computed(() => {
-  return store.state.Estado;
+const { emit, bus } = useEventsBus();
+const data = reactive({
+  messages: [],
 });
+
+const state = ref(false);
+
+watch(
+  () => bus.value.get("server"),
+  (payload) => {
+    state.value = true;
+    data.messages = payload[0].messages;
+  }
+);
 </script>
 
 <style scoped lang="scss">
@@ -84,6 +93,18 @@ const boas_vinda = computed(() => {
   background-color: var(--primary);
   flex: 1;
 
+  .discord {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    h1 {
+      margin-top: 120px;
+      font-size: 75px;
+      font-weight: bolder;
+      color: var(--white);
+    }
+  }
   .message {
     display: flex;
     flex-direction: column;

@@ -1,20 +1,48 @@
 <template>
   <div class="container">
-    <div class="role">Disponivel - 1</div>
-    <UserRole nickname="Wilson Santos" isBot />
-    <div class="role">Offline - 18</div>
+    <div v-if="state" class="role">Disponivel - {{ online.length }}</div>
     <UserRole
-      nickname="Wilson Developer"
-      v-for="offline in 15"
-      :key="offline.id"
+      v-for="item in online"
+      :isbot="item.is_boot"
+      :member="item"
+      :key="item.id"
+    />
+    <div v-if="state" class="role">Offline - {{ offline.length }}</div>
+    <UserRole
+      v-for="item in offline"
+      :member="item"
+      :key="item.id"
     />
   </div>
 </template>
 
 <script>
+import useEventsBus from "@/eventBus";
+import { reactive, toRefs, watch } from "vue";
 import UserRole from "./UserRole.vue";
 export default {
-  setup() {},
+  setup() {
+    const { bus, emit } = useEventsBus();
+
+    const members = reactive({
+      online: [],
+      offline: [],
+      state: false
+    });
+
+    watch(() => bus.value.get("server"),(payload) => {
+        members.state = true
+        members.online = payload[0].members.filter(
+          (item) => item.user.status.status_type.name === "Disponivel"
+        );
+        members.offline = payload[0].members.filter(
+          (item) => item.user.status.status_type.name != "Disponivel"
+        );
+      }
+    );
+
+    return { ...toRefs(members) };
+  },
   components: { UserRole },
 };
 </script>

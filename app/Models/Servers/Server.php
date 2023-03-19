@@ -2,6 +2,7 @@
 
 namespace App\Models\Servers;
 
+use App\Models\Messages\ServerMessage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,7 +10,7 @@ class Server extends Model
 {
     use HasFactory;
 
-    protected $with = ['members','server_type'];
+    protected $with = ['server_type'];
 
     protected $fillable = [
         'server_type_id',
@@ -26,5 +27,9 @@ class Server extends Model
     public function members()
     {
         return $this->hasMany(ServerMembers::class);
+    }
+    public function messages()
+    {
+        return $this->hasMany(ServerMessage::class);
     }
 }

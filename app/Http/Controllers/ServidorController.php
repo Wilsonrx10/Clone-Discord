@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Servers\Server;
 use App\Models\Servers\ServerType;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class ServidorController extends Controller
 {
@@ -34,7 +33,6 @@ class ServidorController extends Controller
         }
 
         if ($img) {
-
             $server = $request->user()->server()->create([
                 'server_type_id' => $request->type_server,
                 'name' => $request->nome,
@@ -46,14 +44,12 @@ class ServidorController extends Controller
                 'is_admin' => true,
             ]);
         } else {
-            return response()->json([
-                'type' => 403,
-                'message' => 'ocorreu um erro ao adicionar o servidor'
-            ]);
+            return $this->respondError('ocorreu um erro ao adicionar o servidor',[]);
         }
     }
 
-    public function AbrirServidor(Request $request, Server $servidor)
-    {
+    public function OpenServer(Server $server)
+    {   
+        return $server->load('messages','members');
     }
 }

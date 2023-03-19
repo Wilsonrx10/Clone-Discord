@@ -1,8 +1,13 @@
 <template>
   <div class="user-role">
-    <div class="avatar" :class="{ 'bot-avatar': isBot }"></div>
-    <strong>{{ nickname }}</strong>
-    <div class="bot" v-if="isBot">Bot</div>
+    <img
+      v-if="!isBot"
+      class="avatar"
+      :src="`image/usuarios/${member.user.profile.profile_photo}`"
+    />
+    <div v-else class="avatar" :class="{ 'bot-avatar': isBot }"></div>
+    <strong>{{ member.user.name }}</strong>
+    <div v-if="isBot" class="bot">Bot</div>
   </div>
 </template>
 
@@ -10,7 +15,9 @@
 export default {
   props: {
     isBot: Boolean,
-    nickname: String,
+    member: {
+      default: () => Object,
+    },
   },
 };
 </script>
