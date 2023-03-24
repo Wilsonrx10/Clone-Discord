@@ -8,14 +8,13 @@
     </div>
 
     <div v-else>
-      <div v-if="NewFriend.estado" class="newfriend">
-        <img :src="'/image/usuarios/' + data.profile.profile_photo" alt="" />
+      <div v-if="NewFriend.state" class="newfriend">
+        <img :src="`/image/usuarios/${data.profile.profile_photo}`" />
         <strong>{{ data.name }}</strong>
         <p>Não tens nenhuma mensagem com seu novo amigo</p>
         <div>
           <span>3 Servidor em comum</span>
-          <button>Adicionar</button>
-          <button>Bloquear</button>
+          <button @click="AddFiend(data.id)">Adicionar</button>
         </div>
       </div>
 
@@ -54,33 +53,32 @@ const store = useStore();
 
 const form = reactive({
   message:null,
-  receiver: store.state.DadosMensagemUsuario
+  receiver: store.state.Chat.DadosMensagemUsuario.user
 });
 
 const wampus = ref(true);
+
 const NewFriend = reactive({
-  estado: false,
+  state: false,
 });
 
-watch(
-  () => bus.value.get("ExibirMessage"),
-  (payload) => {
+watch(() => bus.value.get("ExibirMessage"),(payload) => {
     wampus.value = false;
     data.value = payload[0];
-    store.commit("GUARDAR_DADOS_MENSAGEM_USUARIO", data.value);
+    store.commit("Chat/GUARDAR_DADOS_MENSAGEM_USUARIO", data.value);
     if (payload[1] != null) {
       let resultado = store.state.friends.filter(
-        (item) => item.id === payload[0].id
+        (item) => item.user.id === payload[0].id
       );
       if (resultado.length > 0) {
-        NewFriend.estado = false;
-        store.commit("ABRIR_MENSAGEM_USUARIO");
+        NewFriend.state = false;
+        store.commit("Chat/ABRIR_MENSAGEM_USUARIO");
         emit("ExibirMessages");
       } else {
-        NewFriend.estado = true;
+        NewFriend.state = true;
       }
     }
-    store.commit("ABRIR_MENSAGEM_USUARIO");
+    store.commit("Chat/ABRIR_MENSAGEM_USUARIO");
     emit("ExibirMessages");
   }
 );

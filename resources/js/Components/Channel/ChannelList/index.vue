@@ -23,7 +23,7 @@ export default {
   components: { Channelbutton, AddCategoryIcon },
 };
 </script>
- 
+
 <style scoped lang="scss">
 .ChannelList {
   grid-area: CL;

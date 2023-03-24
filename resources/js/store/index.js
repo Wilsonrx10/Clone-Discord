@@ -1,14 +1,11 @@
 import { createStore } from 'vuex'
 import VuexPersistence from 'vuex-persist'
+import Chat from './Chat';
+import Servers from './Servers';
+
 export default createStore({
     state: {
     user: [],
-    // Channel 
-    DadosServidor:[],
-    // Friend 
-    estadoFriend:true,
-    friends: [],
-    DadosMensagemUsuario:[],
     },
     getters: {
       user(state) {
@@ -19,17 +16,6 @@ export default createStore({
       GUARDAR_DADOS_USUARIO(state,payload) {
         state.user = payload
       },
-
-      GUARDAR_LISTA_AMIGOS(state,payload) {
-        state.friends = payload
-      },
-      ABRIR_MENSAGEM_USUARIO(state) {
-        state.estadoFriend = false
-      },
-
-      GUARDAR_DADOS_MENSAGEM_USUARIO(state,payload) {
-        state.DadosMensagemUsuario = payload
-      }
     },
     plugins:[
       new VuexPersistence({
@@ -39,5 +25,7 @@ export default createStore({
     actions: {
     },
     modules: {
+      Chat,
+      Servers
     }
   })

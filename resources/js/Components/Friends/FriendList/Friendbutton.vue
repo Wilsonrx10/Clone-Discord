@@ -3,7 +3,7 @@
     <div
       v-for="item in amigos"
       :key="item.user.id"
-      @click="ExibirMessage(item.user)"
+      @click="ExibirMessage(item)"
       class="container"
       :class="{ active: selected }"
     >
@@ -46,7 +46,7 @@ const BuscarListaAmigos = async () => {
     await axios.get("channel/BuscarListaAmigos").then((response) => {
     amigos.value = response.data;
     listaAmigos.value = response.data;
-    store.commit('GUARDAR_LISTA_AMIGOS', response.data.friends);
+    store.commit('Chat/GUARDAR_LISTA_AMIGOS', listaAmigos.value);
   });
 }
 
@@ -54,9 +54,8 @@ const FiltrarAmigos = (status) => {
   if (status[0] === "todos") {
     amigos.value = listaAmigos.value;
   } else {
-    let amigo = listaAmigos.value;
-    const filtro = amigo.filter((item) => item.status == status);
-    amigos.value = filtro;
+    const result = listaAmigos.value.filter((item) => item.status.status_type.name == status);
+    amigos.value = result;
   }
 };
 const ExibirMessage = (item) => {

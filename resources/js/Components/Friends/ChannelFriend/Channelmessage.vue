@@ -42,7 +42,13 @@ export default {
     const store = useStore();
 
     onMounted(() => {
+      Echo.private(`user.${store.getters.user.id}`).listen('.SendMessage', (payload) => {
+        console.log(payload);
+        BuscarMensagem();
+      });
+
       BuscarMensagem();
+
     });
 
 
@@ -75,7 +81,7 @@ export default {
     const BuscarMensagem = async () => {
       await axios
         .get(
-          `/channel/BuscarMessages/${store.state.DadosMensagemUsuario.id}`
+          `/channel/BuscarMessages/${store.state.Chat.DadosMensagemUsuario.user.id}`
         )
         .then((response) => {
           messages.value = response.data;

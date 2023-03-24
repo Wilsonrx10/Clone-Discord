@@ -26,7 +26,9 @@ import { useStore } from "vuex";
 
 export default {
   props: {
-    user: Object,
+    user: {
+      default: ()=> Object
+    },
   },
   setup(props) {
     const store = useStore();

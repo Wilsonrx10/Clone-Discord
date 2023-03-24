@@ -29,7 +29,7 @@
         </div>
 
         <div class="nome">
-          <span>{{ nomeUsuario }}</span>
+          <span>{{ user.name }}</span>
         </div>
       </div>
     </section>
@@ -47,7 +47,7 @@ import { watch, ref, reactive } from "@vue/runtime-core";
 import AdicionarFriend from "./AdicionarFriend.vue";
 const { emit, bus } = useEventsBus();
 const estado = ref(true);
-const nomeUsuario = ref();
+const user = ref();
 const addAmigos = reactive({
   estado: false,
 });
@@ -58,11 +58,9 @@ const MudarListFriend = (event) => {
 const AdicionarAmigo = () => {
   addAmigos.estado = true;
 };
-watch(
-  () => bus.value.get("ExibirMessage"),
-  (payload) => {
+watch(() => bus.value.get("ExibirMessage"),(payload) => {
     estado.value = false;
-    nomeUsuario.value = payload[0].name;
+    user.value = payload[0].user ? payload[0].user : payload[0];
   }
 );
 </script>

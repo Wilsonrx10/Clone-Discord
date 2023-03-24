@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\EnviarMessage;
+use App\Events\Message\ChatMessage as MessageChatMessage;
 use App\Models\Messages\ChatMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -42,6 +43,8 @@ class MessageController extends Controller
             'receiver_id' => $request->receiver['id'],
             'message' => $request->message,
         ]);
+
+        Event::dispatch(new MessageChatMessage($request->message,$request->receiver['id']));
 
         return $this->respondSuccess('Sucesso ao enviar mensagem', []);
     }

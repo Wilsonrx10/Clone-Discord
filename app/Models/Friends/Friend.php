@@ -25,6 +25,6 @@ class Friend extends Model
 
     public function status()
     {
-        return $this->belongsTo(FriendStatu::class,'friend_id');
+        return $this->belongsTo(FriendStatu::class,'user_id');
     }
 }
