@@ -18,7 +18,7 @@
         </div>
       </div>
 
-      <div v-else class="message">
+      <div v-else class="message" ref="content">
         <channelmessage />
       </div>
 
@@ -42,7 +42,7 @@ import Arrow from "vue-material-design-icons/ArrowRight.vue";
 import At from "vue-material-design-icons/At.vue";
 import Channelmessage from "./Channelmessage.vue";
 import Channelmention from "./Channelmention.vue";
-import { computed, watch, ref, reactive } from "vue";
+import { computed, watch, ref, reactive, onMounted,nextTick } from "vue";
 import { useStore } from "vuex";
 import axios from "axios";
 import useEventsBus from "@/eventBus";
@@ -61,6 +61,8 @@ const wampus = ref(true);
 const NewFriend = reactive({
   state: false,
 });
+
+const content = ref(null);
 
 watch(() => bus.value.get("ExibirMessage"),(payload) => {
     wampus.value = false;
@@ -84,18 +86,25 @@ watch(() => bus.value.get("ExibirMessage"),(payload) => {
 );
 
 const EnviarMensagem = () => {
+  handleScroll()
   emit("RefreshMessage", form.message);
   axios
     .post("/channel/EnviarMensagem", { ...form })
     .then((response) => {
       console.log(response.data);
-    }).finally(() => {
-      form.message = "";
-    })
-    .catch((erro) => {
+    }).catch((erro) => {
       console.log(erro);
     });
+
+    form.message = "";
 };
+
+const handleScroll = () => {
+  content.value.scrollTo({
+      top: content.value.scrollHeight,
+      behavior: 'smooth',
+  });
+}
 </script>
 
 <style scoped lang="scss">

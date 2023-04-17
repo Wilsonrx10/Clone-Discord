@@ -27,7 +27,7 @@
           />
           <input
             type="text"
-            v-model="formulario.apelido"
+            v-model="form.apelido"
             placeholder="apelido"
             required
           />
@@ -40,7 +40,7 @@
           <div>
             <input
               type="text"
-              v-model="formulario.cidade"
+              v-model="form.cidade"
               placeholder="cidade"
               required
             />
@@ -48,7 +48,7 @@
           <div>
             <input
               type="text"
-              v-model="formulario.telefone"
+              v-model="form.telefone"
               placeholder="telefone"
               required
             />
@@ -74,7 +74,7 @@
           <div class="perfil">
             <img @click="FotoPerfil" :src="element.imagem" width="150" />
             <textarea
-              v-model="formulario.biografia"
+              v-model="form.biografia"
               class="form-control"
               rows="2"
               cols="120"
@@ -127,6 +127,7 @@ import AutocompletePaises from "@/Components/Cadastro/AutocompletePaises.vue";
 import { Inertia } from "@inertiajs/inertia";
 import Message from "primevue/message";
 import SelectHabilidade from "@/Components/Cadastro/SelectHabilidade.vue";
+import {UseUploadPhoto} from '../../composables/public/UploadPhoto'
 
 const props = defineProps({
   dados_usuario: Object,
@@ -136,7 +137,7 @@ const usuario = computed(() => {
   return props.dados_usuario;
 });
 
-const formulario = reactive({
+const form = reactive({
   nacionalidade: null,
   cidade: null,
   telefone: null,
@@ -147,11 +148,11 @@ const formulario = reactive({
 });
 
 const nacionalidade = (payload) => {
-  formulario.nacionalidade = payload.name;
+  form.nacionalidade = payload.name;
 };
 
 const habilidade = (payload) => {
-  formulario.habilidades = payload;
+  form.habilidades = payload;
 };
 
 const element = reactive({
@@ -167,6 +168,8 @@ const erro = reactive({
   message: null,
   estado: false,
 });
+
+const {onFileChange, createImg} = UseUploadPhoto(element,form);
 
 const Next = () => {
   element.fieldset01 = false;
@@ -193,62 +196,9 @@ const FotoPerfil = () => {
   document.getElementById("file").click();
 };
 
-const onFileChange = (e) => {
-  var files = e.target.files || e.dataTransfer.files;
-  // Verificar o formato da imagem
-  let arquivo = files[0].name;
-  let extension = arquivo.indexOf(".") < 1 ? "" : arquivo.split(".").pop();
-  if (extension == "") {
-    return false;
-  } else {
-    const formatos_permitidos = [
-      "jpg",
-      "png",
-      "gif",
-      "jpeg",
-      "JPG",
-      "PNG",
-      "GIF",
-      "JPEG",
-    ];
-    let resultado = formatos_permitidos.includes(extension);
-    if(resultado) {
-      // Tamanho do arquivo em mb
-      var tamanho_maximo = 2242880;
-      var fsizet = 0;
-      for (var i = 0; i <= e.target.files.length - 1; i++) {
-        var fsize = e.target.files.item(i).size;
-        fsizet = fsizet + fsize;
-      }
-      if (fsizet > tamanho_maximo) {
-        erro.message =
-          "Tamanho do arquivo é maior que 5mb 'Tamanho máximo  = 2MB' ";
-        erro.estado = true;
-        setTimeout(() => {
-          erro.estado = false;
-        }, 5000);
-      } else {
-        createImg(files[0]);
-      }
-    }
-  }
-};
-
-const createImg = (file) => {
-  var imagem = new Image();
-  var reader = new FileReader();
-
-  reader.onload = (e) => {
-    element.imagem = e.target.result;
-    formulario.foto_perfil = e.target.result;
-  };
-
-  reader.readAsDataURL(file);
-};
-
 const Concluir_cadastro = () => {
   element.requisicao = true;
-  Inertia.post("/concluir_cadastro", formulario, {
+  Inertia.post("/concluir_cadastro", form, {
     onSuccess: (response) => {
       element.requisicao = false;
     },

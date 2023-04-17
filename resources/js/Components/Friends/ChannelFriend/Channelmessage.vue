@@ -1,5 +1,5 @@
 <template>
-  <div class="message">
+  <div ref="content">
     <div
       v-for="item in messages"
       :key="item.id"
@@ -40,6 +40,7 @@ export default {
     const { bus } = useEventsBus();
     const messages = ref([]);
     const store = useStore();
+    const content = ref(null);
 
     onMounted(() => {
       Echo.private(`user.${store.getters.user.id}`).listen('.SendMessage', (payload) => {
@@ -53,12 +54,7 @@ export default {
 
 
     watch(() => bus.value.get("RefreshMessage"), (payload) => {
-
-      document.querySelector('.message').scrollTo({
-        top: document.querySelector('.message').scrollHeight,
-        behavior: 'smooth'
-      });
-
+        handleScroll();
         let newMessage = {
           message: payload[0],
           user:{
@@ -91,7 +87,14 @@ export default {
         });
     };
 
-    return { BuscarMensagem, messages };
+    const handleScroll = () => {
+      content.value.scrollTo({
+        top: content.value.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+
+    return { BuscarMensagem, messages,handleScroll,content };
   },
 };
 </script>
